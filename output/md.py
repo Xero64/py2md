@@ -10,7 +10,7 @@ class MDWriter(object):
         self.destfilepath = destfilepath
         self.imgcount = 0
     def open_file(self):
-        self.destfile = open(self.destfilepath, 'wt')
+        self.destfile = open(self.destfilepath, 'wt', encoding='utf-8')
     def write_cell(self, cell: dict):
         if cell['type'] == 'code':
             self.write_codeblock(cell)
@@ -82,7 +82,7 @@ class MDWriter(object):
             elif group['type'] == 'image/svg+xml':
                 self.imgcount += 1
                 imgfilepath = self.destfilepath.replace('md', f'{self.imgcount}.svg')
-                with open(imgfilepath, 'wt') as imgfile:
+                with open(imgfilepath, 'wt', encoding='utf-8') as imgfile:
                     imgfile.write(group['result'])
                 mdstr = f'![]({imgfilepath:s})\n'
                 self.destfile.write(mdstr)
