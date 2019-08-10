@@ -6,7 +6,9 @@ def main():
     if args[1][-3:] == '.py':
         py2md = Py2MD(args[1])
         py2md.run()
-        # py2md.print_cells()
+        if len(args) > 2:
+            if args[2] == '--debug':
+                py2md.print_cells()
         py2md.write_file()
 
 if __name__ == "__main__":
