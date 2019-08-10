@@ -1,6 +1,10 @@
 #%% [markdown]
 # # Some Markdown
 # **Bold Text**
+# ~~Strike-through~~
+# | Column 1 | Column 2 | Column 3 |
+# | -------- | -------- | -------- |
+# | Value 1  | Value 2  | Value 3  | 
 
 #%% Import Dependencies
 from IPython.display import display
@@ -26,6 +30,9 @@ display(table)
 # 2.0 & 5.0 \\
 # 4.4 & 5.2
 # \end{bmatrix}
+# $$
+# $$
+# E = m.c^2
 # $$
 
 #%% Simple Plots
