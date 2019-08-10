@@ -6,10 +6,16 @@ class MDTable(object):
         self.initialise()
     def initialise(self):
         self.numrows = 0
-    def add_column(self, header: str, frmstr: str, halign: str=''):
+    def add_column(self, header: str, frmstr: str, halign: str='', data: list=[]):
         from .mdlist import MDList
         mdlist = MDList(header, frmstr, halign)
-        self.columns.append(mdlist)
+        for di in data:
+            mdlist.add_value(di)
+        if len(self.columns) == 0:
+            self.numrows = mdlist.numval
+            self.columns.append(mdlist)
+        elif mdlist.numval == self.numrows:
+            self.columns.append(mdlist)
     def add_row(self, data):
         if len(data) != len(self.columns):
             raise IndexError
