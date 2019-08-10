@@ -64,15 +64,27 @@ class MDWriter(object):
                         group['result'] = data['image/png']
                         groups.append(group)
                         group = {}
+            elif result['output_type'] == 'stream':
+                if 'text' in result:
+                    group['type'] = 'text'
+                    group['result'] = result['text']
+                    groups.append(group)
+                    group = {}
+            elif result['output_type'] == 'error':
+                if 'evalue' in result:
+                    group['type'] = 'error'
+                    group['result'] = result['evalue']
+                    groups.append(group)
+                    group = {}
         if 'type' in group:
             if group['type'] == 'text/plain':
                 groups.append(group)
                 group = {}
         for group in groups:
-            if group['type'] == 'text/plain':
-                self.destfile.write('```\n')
+            if group['type'] == 'text/plain' or group['type'] == 'text' or group['type'] == 'error':
+                self.destfile.write('\n```\n')
                 self.destfile.write('{:s}'.format(group['result']))
-                self.destfile.write('```\n')
+                self.destfile.write('\n```\n')
             elif group['type'] == 'text/markdown':
                 self.destfile.write('{:s}'.format(group['result']))
             elif group['type'] == 'text/html':
