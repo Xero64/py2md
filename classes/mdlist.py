@@ -31,6 +31,8 @@ class MDList(object):
         return frmstr.format(self.header)
     def align_string(self):
         if self.halign == '':
+            if self.length <= 2:
+                return '::'
             frmstr = ':{:'+self.halign+str(self.length-2)+'s}:'
             char = ''
         else:
@@ -43,10 +45,12 @@ class MDList(object):
             return frmstr.format(self.values[ind])
         else:
             raise IndexError
-    def _repr_markdown_(self):
+    def __str__(self):
         mdstr = '\n'
         mdstr += '| ' + self.header_string() + ' |\n'
         mdstr += '| ' + self.align_string() + ' |\n'
         for i in range(self.numval):
             mdstr += '| ' + self.value_string(i) + ' |\n'
         return mdstr
+    def _repr_markdown_(self):
+        return self.__str__()
