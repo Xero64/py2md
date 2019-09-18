@@ -30,8 +30,17 @@ class MDList(object):
         frmstr = '{:'+self.halign+str(self.length)+'s}'
         return frmstr.format(self.header)
     def align_string(self):
-        if self.halign == '':
-            frmstr = ':{:'+self.halign+str(self.length-2)+'s}:'
+        if self.length == 1:
+            return ':'
+        elif self.length == 2:
+            if self.halign == '<':
+                return ':-'
+            elif self.halign == '>':
+                return '-:'
+            else:
+                return '::'
+        elif self.halign == '':
+            frmstr = ':{:'+str(self.length-2)+'s}:'
             char = ''
         else:
             frmstr = '{:'+self.halign+str(self.length)+'s}'
