@@ -23,7 +23,7 @@ class MDTable(object):
             self.numrows += 1
             for i, column in enumerate(self.columns):
                 column.add_value(data[i])
-    def _repr_markdown_(self):
+    def __str__(self):
         mdstr = '\n|'
         for column in self.columns:
             mdstr += ' ' + column.header_string() + ' |'
@@ -38,3 +38,7 @@ class MDTable(object):
                 mdstr += ' ' + column.value_string(i) + ' |'
             mdstr += '\n'
         return mdstr
+    def _repr_markdown_(self):
+        return self.__str__()
+    def __repr__(self):
+        return '<MDTable>'

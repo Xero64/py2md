@@ -52,10 +52,14 @@ class MDList(object):
             return frmstr.format(self.values[ind])
         else:
             raise IndexError
-    def _repr_markdown_(self):
+    def __str__(self):
         mdstr = '\n'
         mdstr += '| ' + self.header_string() + ' |\n'
         mdstr += '| ' + self.align_string() + ' |\n'
         for i in range(self.numval):
             mdstr += '| ' + self.value_string(i) + ' |\n'
         return mdstr
+    def _repr_markdown_(self):
+        return self.__str__()
+    def __repr__(self):
+        return '<MDList>'

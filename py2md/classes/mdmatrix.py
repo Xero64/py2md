@@ -8,7 +8,7 @@ class MDMatrix(object):
         self.label = label
         self.matrix = matrix
         self.frmstr = frmstr
-    def _repr_markdown_(self):
+    def __str__(self):
         mdstr = '$$\n'
         mdstr += '{:s} = \n'.format(self.label)
         mdstr += '\\begin{bmatrix}\n'
@@ -21,5 +21,9 @@ class MDMatrix(object):
                     mdstr += ' \\\\\n'
                 else:
                     mdstr += ' && '
-        mdstr += '\end{bmatrix}\n$$\n'
+        mdstr += '\\end{bmatrix}\n$$\n'
         return mdstr
+    def _repr_markdown_(self):
+        return self.__str__()
+    def __repr__(self):
+        return '<MDMatrix>'
