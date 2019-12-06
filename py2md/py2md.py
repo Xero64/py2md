@@ -94,7 +94,7 @@ class Py2MD(object):
         destination = self.source + '.md'
         print('Writing {:s}'.format(destination))
         t0 = time()
-        from .output.md import MDWriter
+        from .output import MDWriter
         mdwriter = MDWriter(destination)
         mdwriter.open_file()
         for cell in self.cells:

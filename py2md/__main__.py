@@ -1,15 +1,16 @@
-import sys
-from .py2md import Py2MD
+from sys import argv
 
 def main():
-    args = sys.argv
-    if args[1][-3:] == '.py':
-        py2md = Py2MD(args[1])
+    if len(argv) == 1:
+        print('Specify a .py file to run and create a .py.md output file.')
+        print('Use --debug to debug py2md process.')
+        return
+    
+    from .py2md import Py2MD
+    if argv[1][-3:] == '.py':
+        py2md = Py2MD(argv[1])
         py2md.run()
-        if len(args) > 2:
-            if args[2] == '--debug':
+        if len(argv) > 2:
+            if argv[2] == '--debug':
                 py2md.print_cells()
         py2md.write_file()
-
-if __name__ == "__main__":
-    main()
