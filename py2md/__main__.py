@@ -10,7 +10,7 @@ def main():
     if argv[1][-3:] == '.py':
         py2md = Py2MD(argv[1])
         
-        nocode, nohead, inline, debug = False, False, False, False
+        nocode, nohead, inline, debug, mplpng = False, False, False, False, False
         for arg in argv[2:]:
             if arg == '-nocode':
                 nocode = True
