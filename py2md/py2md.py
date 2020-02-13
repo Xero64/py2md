@@ -5,9 +5,15 @@ from time import time
 class Py2MD(object):
     source = None
     cells = None
+    nocode = None
+    nohead = None
+    inline = None
     def __init__(self, source: str):
         self.source = source
         self.read()
+        self.nocode = False
+        self.nohead = False
+        self.inline = False
     def read(self):
         print('Reading {:s}'.format(self.source))
         t0 = time()
@@ -52,7 +58,7 @@ class Py2MD(object):
                 for result in cell['results']:
                     print('{:}'.format(result))
                 print()
-    def run(self):
+    def run(self, mplpng: bool=False):
         from .jupyter import JupyterKernel
         from markdown import markdown
         kernel = 'python3'
@@ -64,7 +70,10 @@ class Py2MD(object):
 
         jk.run_code('%matplotlib inline')
         jk.run_code('from IPython.display import set_matplotlib_formats')
-        jk.run_code('set_matplotlib_formats("svg")')
+        if mplpng:
+            jk.run_code('set_matplotlib_formats("png")')
+        else:
+            jk.run_code('set_matplotlib_formats("svg")')
 
         for ind, cell in enumerate(self.cells):
             if cell['type'] == 'code':
@@ -90,15 +99,20 @@ class Py2MD(object):
 
         jk.stop_client()
         jk.stop_kernel()
-    def write_file(self):
+    def write_file(self, inline: bool=False,
+                         nocode: bool=False,
+                         nohead: bool=False):
         destination = self.source + '.md'
         print('Writing {:s}'.format(destination))
         t0 = time()
         from .output import MDWriter
         mdwriter = MDWriter(destination)
+        mdwriter.inline = inline
+        mdwriter.nocode = nocode
+        mdwriter.nohead = nohead
         mdwriter.open_file()
         for cell in self.cells:
-            mdwriter.write_cell(cell)
+            mdwriter.write_cell(cell, inline, nocode, nohead)
         mdwriter.close_file()
         t1 = time()
         total = t1-t0

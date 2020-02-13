@@ -9,8 +9,24 @@ def main():
     from .py2md import Py2MD
     if argv[1][-3:] == '.py':
         py2md = Py2MD(argv[1])
-        py2md.run()
+        
+        nocode, nohead, inline, debug = False, False, False, False
+        for arg in argv[2:]:
+            if arg == '-nocode':
+                nocode = True
+            elif arg == '-nohead':
+                nohead = True
+            elif arg == '-inline':
+                inline = True
+            elif arg == '-debug':
+                debug = True
+            elif arg == '-mplpng':
+                mplpng = True
+        
+        py2md.run(mplpng)
         if len(argv) > 2:
-            if argv[2] == '--debug':
+            if argv[2] == '-debug':
                 py2md.print_cells()
-        py2md.write_file()
+        if debug:
+            py2md.print_cells()
+        py2md.write_file(inline, nocode, nohead)

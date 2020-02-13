@@ -11,21 +11,29 @@ class MDWriter(object):
         self.imgcount = 0
     def open_file(self):
         self.destfile = open(self.destfilepath, 'wt', encoding='utf-8')
-    def write_cell(self, cell: dict):
+    def write_cell(self, cell: dict,
+                         inline: bool=False,
+                         nocode: bool=False,
+                         nohead: bool=False):
         if cell['type'] == 'code':
-            self.write_codeblock(cell)
-        self.write_mdblock(cell)
-    def write_codeblock(self, cell: dict):
-        content = cell['content']
-        label = cell['label']
-        self.destfile.write(f'\n# {label:s}\n')
-        self.destfile.write('``` python\n')
-        contentsplit = content.split('\n')
-        for line in contentsplit:
-            if line.strip() != '':
-                self.destfile.write(f'{line:s}\n')
-        self.destfile.write('```\n')
-    def write_mdblock(self, cell: dict):
+            self.write_codeblock(cell, nocode, nohead)
+        self.write_mdblock(cell, inline)
+    def write_codeblock(self, cell: dict,
+                              nocode: bool=False,
+                              nohead: bool=False):
+        if not nohead:
+            label = cell['label']
+            self.destfile.write(f'\n# {label:s}\n')
+        if not nocode:
+            content = cell['content']
+            self.destfile.write('``` python\n')
+            contentsplit = content.split('\n')
+            for line in contentsplit:
+                if line.strip() != '':
+                    self.destfile.write(f'{line:s}\n')
+            self.destfile.write('```\n')
+    def write_mdblock(self, cell: dict,
+                            inline: bool=False):
         results = cell['results']
         groups = []
         group = {}
@@ -92,19 +100,30 @@ class MDWriter(object):
                 self.destfile.write('{:s}'.format(group['result']))
                 self.destfile.write('</div>\n')
             elif group['type'] == 'image/svg+xml':
-                self.imgcount += 1
-                imgfilepath = self.destfilepath.replace('md', f'{self.imgcount}.svg')
-                with open(imgfilepath, 'wt', encoding='utf-8') as imgfile:
-                    imgfile.write(group['result'])
-                mdstr = f'![]({imgfilepath:s})\n'
-                self.destfile.write(mdstr)
+                if inline:
+                    svgtext = group['result'].replace('\r\n', '\n')
+                    svgbeg = svgtext.find('<svg ')
+                    svgtext = svgtext[svgbeg:] + '\n'
+                    self.destfile.write(svgtext)
+                else:
+                    self.imgcount += 1
+                    imgfilepath = self.destfilepath.replace('md', f'{self.imgcount}.svg')
+                    with open(imgfilepath, 'wt', encoding='utf-8') as imgfile:
+                        imgfile.write(group['result'])
+                    mdstr = f'![]({imgfilepath:s})\n'
+                    self.destfile.write(mdstr)
             elif group['type'] == 'image/png':
-                self.imgcount += 1
-                imgfilepath = self.destfilepath.replace('md', f'{self.imgcount}.png')
-                with open(imgfilepath, 'wb') as imgfile:
-                    imgfile.write(b64decode(group['result']))
-                mdstr = f'![]({imgfilepath:s})\n'
-                self.destfile.write(mdstr)
+                if inline:
+                    pngtext = group['result']
+                    pngtext = '<img alt="My Image" src="data:image/png;base64,' + pngtext + '" />\n'
+                    self.destfile.write(pngtext)
+                else:
+                    self.imgcount += 1
+                    imgfilepath = self.destfilepath.replace('md', f'{self.imgcount}.png')
+                    with open(imgfilepath, 'wb') as imgfile:
+                        imgfile.write(b64decode(group['result']))
+                    mdstr = f'![]({imgfilepath:s})\n'
+                    self.destfile.write(mdstr)
             else:
                 self.destfile.write('{:s}'.format(group['result']))
     def close_file(self):
