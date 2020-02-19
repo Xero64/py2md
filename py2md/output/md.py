@@ -103,7 +103,7 @@ class MDWriter(object):
                 if inline:
                     svgtext = group['result'].replace('\r\n', '\n')
                     svgbeg = svgtext.find('<svg ')
-                    svgtext = svgtext[svgbeg:] + '\n'
+                    svgtext = '\n' + svgtext[svgbeg:] + '\n'
                     self.destfile.write(svgtext)
                 else:
                     self.imgcount += 1
@@ -115,7 +115,7 @@ class MDWriter(object):
             elif group['type'] == 'image/png':
                 if inline:
                     pngtext = group['result']
-                    pngtext = '<img alt="My Image" src="data:image/png;base64,' + pngtext + '" />\n'
+                    pngtext = '\n<img alt="My Image" src="data:image/png;base64,' + pngtext + '" />\n'
                     self.destfile.write(pngtext)
                 else:
                     self.imgcount += 1
