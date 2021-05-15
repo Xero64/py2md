@@ -1,8 +1,9 @@
+from .mdobject import MDObject
 from io import StringIO
 
-class MDFigure(object):
+class MDFigure(MDObject):
     fig = None
-    frm = None
+    frm: str = None
     def __init__(self, fig, frm: str='svg'):
         self.fig = fig
         self.frm = frm
@@ -14,5 +15,3 @@ class MDFigure(object):
         data = data[ind:]
         strio.close()
         return data
-    def _repr_markdown_(self):
-        return self.__str__()

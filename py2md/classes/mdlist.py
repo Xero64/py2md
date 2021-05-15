@@ -1,16 +1,17 @@
+from typing import List
+from .mdobject import MDObject
+
 class MDList(object):
-    header = None
-    frmstr = None
-    halign = None
-    values = None
-    length = None
-    numval = None
+    header: str = None
+    frmstr: str = None
+    halign: str = None
+    values: List[object] = None
+    length: int = None
+    numval: int = None
     def __init__(self, header: str, frmstr: str, halign: str=''):
         self.header = header
         self.frmstr = frmstr
         self.halign = halign
-        self.initialise()
-    def initialise(self):
         self.values = []
         self.numval = 0
         self.length = len(self.header)
@@ -59,7 +60,5 @@ class MDList(object):
         for i in range(self.numval):
             mdstr += '| ' + self.value_string(i) + ' |\n'
         return mdstr
-    def _repr_markdown_(self):
-        return self.__str__()
     def __repr__(self):
-        return '<MDList>'
+        return f'<MDList: {self.header:s}>'

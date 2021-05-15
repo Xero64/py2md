@@ -1,10 +1,12 @@
-class MDTable(object):
-    columns = None
-    numrows = None
+from typing import List
+from .mdobject import MDObject
+from .mdlist import MDList
+
+class MDTable(MDObject):
+    columns: List[MDList] = None
+    numrows: int = None
     def __init__(self):
         self.columns = []
-        self.initialise()
-    def initialise(self):
         self.numrows = 0
     def add_column(self, header: str, frmstr: str, halign: str='', data: list=[]):
         from .mdlist import MDList
@@ -38,7 +40,5 @@ class MDTable(object):
                 mdstr += ' ' + column.value_string(i) + ' |'
             mdstr += '\n'
         return mdstr
-    def _repr_markdown_(self):
-        return self.__str__()
     def __repr__(self):
         return '<MDTable>'
