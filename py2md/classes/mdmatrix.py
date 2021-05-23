@@ -13,7 +13,6 @@ class MDMatrix(MDObject):
         mdstr = '\n$$\n'
         mdstr += '{:s} = \n'.format(self.label)
         mdstr += '\\begin{bmatrix}\n'
-        shp = self.matrix.shape
         for i in range(len(self.matrix)):
             row = self.matrix[i]
             for j in range(len(row)):
