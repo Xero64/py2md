@@ -14,7 +14,7 @@ class MDList(object):
         self.halign = halign
         self.values = []
         self.numval = 0
-        self.length = len(self.header)
+        self.length = max(len(self.header), 3)
     def add_value(self, value):
         self.values.append(value)
         self.numval = len(self.values)
