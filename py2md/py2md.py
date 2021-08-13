@@ -63,7 +63,7 @@ class Py2MD(object):
         from markdown import markdown
         kernel = 'python3'
         curdir = split(abspath(self.source))[0]
-        
+
         jk = JupyterKernel(kernel, curdir)
         jk.start_kernel()
         jk.start_client()

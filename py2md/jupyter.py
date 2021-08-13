@@ -25,7 +25,7 @@ class JupyterKernel(object):
             raise
         self.output = []
     def run_code(self, src: str):
-        
+
         msg_id = self.client.execute(src.lstrip(), store_history=False)
 
         while True:
