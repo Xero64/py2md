@@ -20,7 +20,7 @@ class MDTable(MDObject):
             self.columns.append(mdlist)
     def add_row(self, data):
         if len(data) != len(self.columns):
-            raise IndexError
+            raise ValueError('The length of data does not match the number of columns.')
         else:
             self.numrows += 1
             for i, column in enumerate(self.columns):
