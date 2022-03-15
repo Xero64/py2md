@@ -9,7 +9,7 @@ class MDReport(MDObject):
         if isinstance(obj, MDObject):
             self.objs.append(obj)
         else:
-            return ValueError('Not a valid MDObject.')
+            raise ValueError('Not a valid MDObject.')
     def __str__(self):
         mdstr = ''
         for obj in self.objs:
