@@ -1,17 +1,20 @@
-#%% [markdown]
+#%%
+# [markdown]
 # # Some Markdown
 # **Bold Text**
 # ~~Strike-through~~
 # | Column 1 | Column 2 | Column 3 |
 # | -------- | -------- | -------- |
-# | Value 1  | Value 2  | Value 3  | 
+# | Value 1  | Value 2  | Value 3  |
 
-#%% Import Dependencies
+#%%
+# Import Dependencies
 from IPython.display import display
 from matplotlib.pyplot import figure
 from py2md.classes import MDTable
 
-#%% Create Table
+#%%
+# Create Table
 table = MDTable()
 table.add_column('y', '.2f')
 table.add_column('z', '.2f')
@@ -23,7 +26,8 @@ print(table.columns[1].length)
 
 display(table)
 
-#%% [markdown]
+#%%
+# [markdown]
 # # Latex Equations
 # $$
 # \begin{bmatrix}
@@ -35,7 +39,8 @@ display(table)
 # E = m.c^2
 # $$
 
-#%% Simple Plots
+#%%
+# Simple Plots
 
 fig = figure(figsize=(12, 8))
 ax = fig.gca()
