@@ -14,7 +14,7 @@ class JupyterKernel(object):
     def start_kernel(self):
         self.kernel.start_kernel(cwd=self.curdir, stderr=open(devnull, 'w'))
     def start_client(self):
-        self.client = self.kernel.client()
+        self.client = self.kernel.blocking_client()
         self.client.start_channels()
         try:
             self.client.wait_for_ready()
@@ -52,7 +52,9 @@ class JupyterKernel(object):
                 # in certain CI systems, waiting < 1 second might miss messages.
                 # So long as the kernel sends a status:idle message when it
                 # finishes, we won't actually have to wait this long, anyway.
-                msg = self.client.iopub_channel.get_msg(block=True, timeout=4)
+                # msg = self.client.iopub_channel.get_msg(block=True, timeout=4)
+                # msg = self.client.iopub_channel.get_msg(timeout=4)
+                msg = self.client.get_iopub_msg(timeout=4)
             except Empty:
                 print("Timeout waiting for IOPub output\nTry restarting python session and running weave again")
                 raise RuntimeError("Timeout waiting for IOPub output")
