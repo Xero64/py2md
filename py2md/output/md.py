@@ -1,26 +1,26 @@
-from inspect import getfile, currentframe
-from os.path import abspath, join, basename
+from typing import TextIO, Dict
+
 from base64 import b64decode
 
-class MDWriter(object):
-    destfilepath = None
-    destfile = None
-    imgcount = None
-    def __init__(self, destfilepath: str):
+class MDWriter():
+    destfilepath: str = None
+    destfile: 'TextIO' = None
+    imgcount: int = None
+    def __init__(self, destfilepath: str) -> None:
         self.destfilepath = destfilepath
         self.imgcount = 0
-    def open_file(self):
+    def open_file(self) -> None:
         self.destfile = open(self.destfilepath, 'wt', encoding='utf-8')
-    def write_cell(self, cell: dict,
-                         inline: bool=False,
-                         nocode: bool=False,
-                         nohead: bool=False):
+    def write_cell(self, cell: Dict[str, str],
+                   inline: bool=False,
+                   nocode: bool=False,
+                   nohead: bool=False) -> None:
         if cell['type'] == 'code':
             self.write_codeblock(cell, nocode, nohead)
         self.write_mdblock(cell, inline)
-    def write_codeblock(self, cell: dict,
-                              nocode: bool=False,
-                              nohead: bool=False):
+    def write_codeblock(self, cell: Dict[str, str],
+                        nocode: bool=False,
+                        nohead: bool=False) -> None:
         if not nohead:
             label = cell['label']
             self.destfile.write(f'\n# {label:s}\n')
@@ -32,8 +32,8 @@ class MDWriter(object):
                 if line.strip() != '':
                     self.destfile.write(f'{line:s}\n')
             self.destfile.write('```\n')
-    def write_mdblock(self, cell: dict,
-                            inline: bool=False):
+    def write_mdblock(self, cell: Dict[str, str],
+                      inline: bool=False) -> None:
         results = cell['results']
         groups = []
         group = {}
@@ -89,7 +89,8 @@ class MDWriter(object):
                 groups.append(group)
                 group = {}
         for group in groups:
-            if group['type'] == 'text/plain' or group['type'] == 'text' or group['type'] == 'error':
+            if group['type'] == 'text/plain' or \
+                group['type'] == 'text' or group['type'] == 'error':
                 self.destfile.write('\n```\n')
                 self.destfile.write('{:s}'.format(group['result']))
                 self.destfile.write('\n```\n')
@@ -101,13 +102,15 @@ class MDWriter(object):
                 self.destfile.write('</div>\n')
             elif group['type'] == 'image/svg+xml':
                 if inline:
-                    svgtext = group['result'].replace('\r\n', '\n')
+                    grpres: str = group['result']
+                    svgtext: str = grpres.replace('\r\n', '\n')
                     svgbeg = svgtext.find('<svg ')
                     svgtext = '\n' + svgtext[svgbeg:] + '\n'
                     self.destfile.write(svgtext)
                 else:
                     self.imgcount += 1
-                    imgfilepath = self.destfilepath.replace('md', f'{self.imgcount}.svg')
+                    repstr = f'{self.imgcount}.svg'
+                    imgfilepath = self.destfilepath.replace('md', repstr)
                     with open(imgfilepath, 'wt', encoding='utf-8') as imgfile:
                         imgfile.write(group['result'])
                     mdstr = f'![]({imgfilepath:s})\n'
@@ -115,16 +118,20 @@ class MDWriter(object):
             elif group['type'] == 'image/png':
                 if inline:
                     pngtext = group['result']
-                    pngtext = '\n<img alt="My Image" src="data:image/png;base64,' + pngtext + '" />\n'
-                    self.destfile.write(pngtext)
+                    outtext = '\n<img alt="My Image" src="data:image/png;base64,'
+                    outtext += pngtext + '" />\n'
+                    self.destfile.write(outtext)
                 else:
                     self.imgcount += 1
-                    imgfilepath = self.destfilepath.replace('md', f'{self.imgcount}.png')
+                    repstr = f'{self.imgcount}.png'
+                    imgfilepath = self.destfilepath.replace('md', repstr)
                     with open(imgfilepath, 'wb') as imgfile:
                         imgfile.write(b64decode(group['result']))
                     mdstr = f'![]({imgfilepath:s})\n'
                     self.destfile.write(mdstr)
             else:
                 self.destfile.write('{:s}'.format(group['result']))
-    def close_file(self):
+    def close_file(self) -> None:
         self.destfile.close()
+    def __repr__(self) -> str:
+        return '<py2md.MDWriter>'

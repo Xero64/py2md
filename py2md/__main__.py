@@ -1,7 +1,7 @@
 from sys import argv
 from .py2md import Py2MD
 
-def main():
+def main() -> None:
     if len(argv) == 1:
         print('Specify a .py file to run and create a .py.md output file.')
         print('Use -debug to debug py2md process.')

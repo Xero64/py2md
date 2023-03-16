@@ -1,15 +1,16 @@
-from typing import List
+from typing import List, Any
 from .mdobject import MDObject
 
 class MDMatrix(MDObject):
-    label = None
-    matrix = None
-    frmstr = None
-    def __init__(self, label: str, matrix: List[List[object]], frmstr: str):
+    label: str = None
+    matrix: List[List[Any]] = None
+    frmstr: str = None
+    def __init__(self, label: str, matrix: List[List[Any]],
+                 frmstr: str) -> None:
         self.label = label
         self.matrix = matrix
         self.frmstr = frmstr
-    def __str__(self):
+    def __str__(self) -> str:
         mdstr = '\n$$\n'
         mdstr += '{:s} = \n'.format(self.label)
         mdstr += '\\begin{bmatrix}\n'
@@ -24,5 +25,5 @@ class MDMatrix(MDObject):
                     mdstr += ' && '
         mdstr += '\\end{bmatrix}\n$$\n'
         return mdstr
-    def __repr__(self):
-        return f'<MDMatrix: {self.label:s}>'
+    def __repr__(self) -> str:
+        return f'<py2md.MDMatrix: {self.label:s}>'

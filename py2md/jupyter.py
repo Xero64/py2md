@@ -1,30 +1,38 @@
+from typing import TYPE_CHECKING, List, Dict
+
 from jupyter_client import KernelManager
 from nbformat.v4 import output_from_msg
 from os import devnull
 from queue import Empty
 
-class JupyterKernel(object):
-    kernel = None
-    curdir = None
-    client = None
-    output = None
-    def __init__(self, kernel: str, curdir: str):
+if TYPE_CHECKING:
+    from jupyter_client import BlockingKernelClient
+
+class JupyterKernel():
+    kernel: 'KernelManager' = None
+    curdir: str = None
+    client: 'BlockingKernelClient' = None
+    output: List[str] = None
+
+    def __init__(self, kernel: str, curdir: str) -> None:
         self.kernel = KernelManager(kernel_name=kernel)
         self.curdir = curdir
+
     def start_kernel(self):
         self.kernel.start_kernel(cwd=self.curdir, stderr=open(devnull, 'w'))
+
     def start_client(self):
-        self.client = self.kernel.blocking_client()
+        self.client: 'BlockingKernelClient' = self.kernel.blocking_client()
         self.client.start_channels()
         try:
             self.client.wait_for_ready()
         except RuntimeError:
-            print("Timeout from starting kernel\nTry restarting python session and running weave again")
-            self.client.stop_channels()
-            self.client.shutdown_kernel()
-            raise
+            self.stop_client()
+            self.stop_kernel()
+            raise RuntimeError('Timeout from starting kernel.')
         self.output = []
-    def run_code(self, src: str):
+
+    def run_code(self, src: str) -> None:
 
         msg_id = self.client.execute(src.lstrip(), store_history=False)
 
@@ -47,28 +55,19 @@ class JupyterKernel(object):
 
         while True:
             try:
-                # We've already waited for execute_reply, so all output
-                # should already be waiting. However, on slow networks, like
-                # in certain CI systems, waiting < 1 second might miss messages.
-                # So long as the kernel sends a status:idle message when it
-                # finishes, we won't actually have to wait this long, anyway.
-                # msg = self.client.iopub_channel.get_msg(block=True, timeout=4)
-                # msg = self.client.iopub_channel.get_msg(timeout=4)
                 msg = self.client.get_iopub_msg(timeout=4)
             except Empty:
-                print("Timeout waiting for IOPub output\nTry restarting python session and running weave again")
+                outstr = 'Timeout waiting for IOPub output\n'
+                outstr += 'Try restarting python session and running weave again\n'
+                print(outstr)
                 raise RuntimeError("Timeout waiting for IOPub output")
 
-            #stdout from InProcessKernelManager has no parent_header
-            if msg['parent_header'].get('msg_id') != msg_id and msg['msg_type'] != "stream":
+            if msg['parent_header'].get('msg_id') != msg_id and \
+                msg['msg_type'] != "stream":
                 continue
 
-            msg_type = msg['msg_type']
-            content = msg['content']
-
-            # set the prompt number for the input and the output
-            # if 'execution_count' in content:
-            #     cell['execution_count'] = content['execution_count']
+            msg_type: str = msg['msg_type']
+            content: str = msg['content']
 
             if msg_type == 'status':
                 if content['execution_state'] == 'idle':
@@ -89,7 +88,8 @@ class JupyterKernel(object):
                 print("unhandled iopub msg: " + msg_type)
             else:
                 self.output.append(out)
-    def run_cell(self, cell: dict):
+
+    def run_cell(self, cell: Dict[str, str]) -> None:
         self.output = []
         content = cell['content']
         contentsplit = content.split('\n')
@@ -99,7 +99,12 @@ class JupyterKernel(object):
                 code += line + '\n'
         self.run_code(code)
         return self.output
-    def stop_client(self):
+
+    def stop_client(self) -> None:
         self.client.stop_channels()
-    def stop_kernel(self):
+
+    def stop_kernel(self) -> None:
         self.kernel.shutdown_kernel()
+
+    def __repr__(self) -> str:
+        return '<py2md.JupyterKernel>'

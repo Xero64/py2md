@@ -3,12 +3,13 @@ from .mdobject import MDObject
 from .mdlist import MDList
 
 class MDTable(MDObject):
-    columns: List[MDList] = None
+    columns: List['MDList'] = None
     numrows: int = None
-    def __init__(self):
+    def __init__(self) -> None:
         self.columns = []
         self.numrows = 0
-    def add_column(self, header: str, frmstr: str, halign: str='', data: list=[]):
+    def add_column(self, header: str, frmstr: str,
+                   halign: str='', data: list=[]) -> None:
         from .mdlist import MDList
         mdlist = MDList(header, frmstr, halign)
         for di in data:
@@ -18,14 +19,15 @@ class MDTable(MDObject):
             self.columns.append(mdlist)
         elif mdlist.numval == self.numrows:
             self.columns.append(mdlist)
-    def add_row(self, data):
+    def add_row(self, data) -> None:
         if len(data) != len(self.columns):
-            raise ValueError('The length of data does not match the number of columns.')
+            err = 'The length of data does not match the number of columns.'
+            raise ValueError(err)
         else:
             self.numrows += 1
             for i, column in enumerate(self.columns):
                 column.add_value(data[i])
-    def __str__(self):
+    def __str__(self) -> str:
         mdstr = '\n|'
         for column in self.columns:
             mdstr += ' ' + column.header_string() + ' |'
@@ -40,5 +42,5 @@ class MDTable(MDObject):
                 mdstr += ' ' + column.value_string(i) + ' |'
             mdstr += '\n'
         return mdstr
-    def __repr__(self):
-        return '<MDTable>'
+    def __repr__(self) -> str:
+        return '<py2md.MDTable>'

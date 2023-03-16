@@ -1,8 +1,13 @@
+from typing import TYPE_CHECKING
+
 from .mdobject import MDObject
 from io import StringIO
 
+if TYPE_CHECKING:
+    from matplotlib.figure import Figure
+
 class MDFigure(MDObject):
-    fig = None
+    fig: 'Figure' = None
     frm: str = None
     def __init__(self, fig, frm: str='svg'):
         self.fig = fig
@@ -15,3 +20,5 @@ class MDFigure(MDObject):
         data = data[ind:]
         strio.close()
         return data
+    def __repr__(self) -> str:
+        return '<py2md.MDFigure>'

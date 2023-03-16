@@ -1,5 +1,4 @@
-#%%
-# [markdown]
+#%% [markdown]
 # # Some Markdown
 # **Bold Text**
 # ~~Strike-through~~
@@ -26,8 +25,7 @@ print(table.columns[1].length)
 
 display(table)
 
-#%%
-# [markdown]
+#%% [markdown]
 # # Latex Equations
 # $$
 # \begin{bmatrix}
@@ -46,4 +44,4 @@ fig = figure(figsize=(12, 8))
 ax = fig.gca()
 ax.plot([1.0, 2.0, 3.0], [5.0, 3.0, 4.0], label='Plot')
 ax.grid(True)
-l = ax.legend()
+_ = ax.legend()

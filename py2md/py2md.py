@@ -1,14 +1,19 @@
-from inspect import getfile, currentframe
 from os.path import abspath, split
+from re import search
 from time import time
+from typing import Dict, List
 
-class Py2MD(object):
-    source = None
-    cells = None
-    nocode = None
-    nohead = None
-    inline = None
-    def __init__(self, source: str):
+from .jupyter import JupyterKernel
+from .output.md import MDWriter
+
+
+class Py2MD():
+    source: str = None
+    cells: List[Dict[str, str]] = None
+    nocode: bool = None
+    nohead: bool = None
+    inline: bool = None
+    def __init__(self, source: str) -> None:
         self.source = source
         self.read()
         self.nocode = False
@@ -23,6 +28,7 @@ class Py2MD(object):
             cell = {}
             linenum = 0
             for line in file:
+                line: str = line
                 linenum += 1
                 if line[0:3] == r'#%%':
                     line = line.replace(r'#%%', '')
@@ -46,7 +52,7 @@ class Py2MD(object):
         t1 = time()
         total = t1-t0
         print('Read {:s} in {:g} seconds'.format(self.source, total))
-    def print_cells(self):
+    def print_cells(self) -> None:
         for ind, cell in enumerate(self.cells):
             print('Chunk {:d}'.format(ind))
             if 'type' in cell:
@@ -58,9 +64,7 @@ class Py2MD(object):
                 for result in cell['results']:
                     print('{:}'.format(result))
                 print()
-    def run(self, mplpng: bool=False):
-        from .jupyter import JupyterKernel
-        from markdown import markdown
+    def run(self, mplpng: bool=False) -> None:
         kernel = 'python3'
         curdir = split(abspath(self.source))[0]
 
@@ -77,39 +81,31 @@ class Py2MD(object):
 
         for ind, cell in enumerate(self.cells):
             if cell['type'] == 'code':
-                # print('Executing code cell {:d}'.format(ind))
                 t0 = time()
                 cell['results'] = jk.run_cell(cell)
                 t1 = time()
                 total = t1-t0
                 print('Executed code cell {:d} in {:g} seconds'.format(ind, total))
             if cell['type'] == 'markdown':
-                # print('Converting markdown cell {:d}'.format(ind))
                 t0 = time()
                 content = cell['content']
                 content = cleanup_markdown(content)
-                # content = replace_outline_latex(content, r'<p>\\(', r'\\)</p>')
-                # content = markdown(content)
                 result = {'output_type': 'display_data', 'data': []}
                 result['data'] = {'text/markdown': content}
                 cell['results'] = [result]
                 t1 = time()
                 total = t1-t0
-                print('Outputting markdown cell {:d} in {:g} seconds'.format(ind, total))
+                print(f'Outputting markdown cell {ind:d} in {total:g} seconds')
 
         jk.stop_client()
         jk.stop_kernel()
     def write_file(self, inline: bool=False,
-                         nocode: bool=False,
-                         nohead: bool=False):
+                   nocode: bool=False,
+                   nohead: bool=False) -> None:
         destination = self.source + '.md'
         print('Writing {:s}'.format(destination))
         t0 = time()
-        from .output import MDWriter
         mdwriter = MDWriter(destination)
-        mdwriter.inline = inline
-        mdwriter.nocode = nocode
-        mdwriter.nohead = nohead
         mdwriter.open_file()
         for cell in self.cells:
             mdwriter.write_cell(cell, inline, nocode, nohead)
@@ -117,8 +113,10 @@ class Py2MD(object):
         t1 = time()
         total = t1-t0
         print('Wrote {:s} in {:g} seconds'.format(destination, total))
+    def __repr__(self) -> str:
+        return '<py2md.Py2MD>'
 
-def cleanup_markdown(instr: str):
+def cleanup_markdown(instr: str) -> str:
     contentsplit = instr.split('\n')
     mdstr = ''
     for line in contentsplit:
@@ -126,8 +124,8 @@ def cleanup_markdown(instr: str):
             mdstr += line[2:] + '\n'
     return mdstr
 
-def replace_outline_latex(instr: str, begstr: str, endstr: str):
-    from re import search
+def replace_outline_latex(instr: str, begstr: str,
+                          endstr: str) -> str:
     newstr = instr
     poslst = []
     match = search(r'\$\$', newstr)
@@ -140,8 +138,6 @@ def replace_outline_latex(instr: str, begstr: str, endstr: str):
     for pos in poslst:
         newpos = (pos[0]+newpos[1], pos[1]+newpos[1])
         newposlst.append(newpos)
-    # print(poslst)
-    # print(newpos)
     newposlst.reverse()
     beg, end = False, True
     for pos in newposlst:
