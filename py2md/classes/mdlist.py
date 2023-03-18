@@ -54,12 +54,20 @@ class MDList(MDObject):
             return frmstr.format(self.values[ind])
         else:
             raise IndexError
-    def __str__(self) -> str:
+    def _repr_markdown_(self) -> str:
         mdstr = '\n'
         mdstr += '| ' + self.header_string() + ' |\n'
         mdstr += '| ' + self.align_string() + ' |\n'
         for i in range(self.numval):
             mdstr += '| ' + self.value_string(i) + ' |\n'
+        mdstr += '\n<br/>\n'
         return mdstr
+    def __str__(self) -> str:
+        outstr = '\n'
+        outstr += '| ' + self.header_string() + ' |\n'
+        outstr += '| ' + self.align_string() + ' |\n'
+        for i in range(self.numval):
+            outstr += '| ' + self.value_string(i) + ' |\n'
+        return outstr
     def __repr__(self) -> str:
         return f'<py2md.MDList: {self.header:s}>'

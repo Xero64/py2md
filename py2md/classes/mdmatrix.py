@@ -11,19 +11,19 @@ class MDMatrix(MDObject):
         self.matrix = matrix
         self.frmstr = frmstr
     def __str__(self) -> str:
-        mdstr = '\n$$\n'
-        mdstr += '{:s} = \n'.format(self.label)
-        mdstr += '\\begin{bmatrix}\n'
+        outstr = '\n$$\n'
+        outstr += '{:s} = \n'.format(self.label)
+        outstr += '\\begin{bmatrix}\n'
         for i in range(len(self.matrix)):
             row = self.matrix[i]
             for j in range(len(row)):
                 value = self.matrix[i][j]
-                mdstr += value.__format__(self.frmstr)
+                outstr += value.__format__(self.frmstr)
                 if j == len(row)-1:
-                    mdstr += ' \\\\\n'
+                    outstr += ' \\\\\n'
                 else:
-                    mdstr += ' && '
-        mdstr += '\\end{bmatrix}\n$$\n'
-        return mdstr
+                    outstr += ' && '
+        outstr += '\\end{bmatrix}\n$$\n'
+        return outstr
     def __repr__(self) -> str:
         return f'<py2md.MDMatrix: {self.label:s}>'

@@ -27,7 +27,7 @@ class MDTable(MDObject):
             self.numrows += 1
             for i, column in enumerate(self.columns):
                 column.add_value(data[i])
-    def __str__(self) -> str:
+    def _repr_markdown_(self) -> str:
         mdstr = '\n|'
         for column in self.columns:
             mdstr += ' ' + column.header_string() + ' |'
@@ -41,6 +41,22 @@ class MDTable(MDObject):
             for column in self.columns:
                 mdstr += ' ' + column.value_string(i) + ' |'
             mdstr += '\n'
+        mdstr += '\n<br/>\n'
         return mdstr
+    def __str__(self) -> str:
+        outstr = '\n|'
+        for column in self.columns:
+            outstr += ' ' + column.header_string() + ' |'
+        outstr += '\n'
+        outstr += '|'
+        for column in self.columns:
+            outstr += ' ' + column.align_string() + ' |'
+        outstr += '\n'
+        for i in range(self.numrows):
+            outstr += '|'
+            for column in self.columns:
+                outstr += ' ' + column.value_string(i) + ' |'
+            outstr += '\n'
+        return outstr
     def __repr__(self) -> str:
         return '<py2md.MDTable>'

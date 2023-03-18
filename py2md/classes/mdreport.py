@@ -10,10 +10,15 @@ class MDReport(MDObject):
             self.objs.append(obj)
         else:
             raise ValueError('Not a valid MDObject.')
-    def __str__(self) -> str:
+    def _repr_markdown_(self) -> str:
         mdstr = ''
         for obj in self.objs:
-            mdstr += obj.__str__()
+            mdstr += obj._repr_markdown_()
         return mdstr
+    def __str__(self) -> str:
+        outstr = ''
+        for obj in self.objs:
+            outstr += str(obj)
+        return outstr
     def __repr__(self) -> str:
         return '<py2md.MDReport>'

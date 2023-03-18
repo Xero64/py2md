@@ -7,12 +7,12 @@ class MDHeading(MDObject):
         self.heading = heading
         self.level = level
     def __str__(self) -> str:
-        mdstr = '\n'
+        outstr = '\n'
         for _ in range(self.level):
-            mdstr += '#'
-        mdstr += ' '
-        mdstr += self.heading
-        mdstr += '\n'
-        return mdstr
+            outstr += '#'
+        outstr += ' '
+        outstr += self.heading
+        outstr += '\n'
+        return outstr
     def __repr__(self) -> str:
         return f'<py2md.MDHeading: {self.heading:s}>'
