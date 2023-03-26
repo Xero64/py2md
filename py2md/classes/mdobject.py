@@ -5,7 +5,7 @@ class MDObject():
         if 'encoding' not in kwargs:
             kwargs['encoding'] = 'UTF-8'
         with open(mdfilepath, **kwargs) as mdfile:
-            mdfile.write(self.__str__())
+            mdfile.write(self._repr_markdown_())
     def _repr_markdown_(self) -> str:
         return self.__str__()
     def __repr__(self) -> str:

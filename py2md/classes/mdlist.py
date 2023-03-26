@@ -19,7 +19,11 @@ class MDList(MDObject):
     def add_value(self, value: Any) -> None:
         self.values.append(value)
         self.numval = len(self.values)
-        string = value.__format__(self.frmstr)
+        try:
+            string = value.__format__(self.frmstr)
+        except TypeError:
+            err = f'Value {value} cannot be formatted with {self.frmstr}.'
+            raise TypeError(err)
         strlen = len(string)
         if strlen > self.length:
             self.length = strlen

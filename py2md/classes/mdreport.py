@@ -18,7 +18,7 @@ class MDReport(MDObject):
     def __str__(self) -> str:
         outstr = ''
         for obj in self.objs:
-            outstr += str(obj)
+            outstr += obj.__str__()
         return outstr
     def __repr__(self) -> str:
         return '<py2md.MDReport>'

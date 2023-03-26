@@ -17,7 +17,7 @@ class MDFigure(MDObject):
         self.fig.savefig(strio, format=self.frm)
         data = strio.getvalue()
         ind = data.index('<svg ')
-        data = data[ind:]
+        data = '\n' + data[ind:] + '\n'
         strio.close()
         return data
     def __repr__(self) -> str:
