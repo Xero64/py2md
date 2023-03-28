@@ -118,7 +118,7 @@ class MDWriter():
             elif group['type'] == 'image/png':
                 if inline:
                     pngtext = group['result']
-                    outtext = '\n<img alt="My Image" src="data:image/png;base64,'
+                    outtext = '\n<img alt="" src="data:image/png;base64,'
                     outtext += pngtext + '" />\n'
                     self.destfile.write(outtext)
                 else:
