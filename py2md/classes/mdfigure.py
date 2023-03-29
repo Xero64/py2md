@@ -50,7 +50,7 @@ class MDFigure(MDObject):
             with open(figfilepath, 'wb') as imgfile:
                       imgfile.write(self.figbyt)
         figrelpath = relpath(figfilepath, path)
-        return f'\n![{figname:s}]({figrelpath:s})\n'
+        return f'\n![]({figrelpath:s})\n'
     def _repr_markdown_(self) -> str:
         if self.frm == 'svg':
             return self.figstr
