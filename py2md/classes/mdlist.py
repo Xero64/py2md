@@ -8,6 +8,7 @@ class MDList(MDObject):
     values: List[Any] = None
     length: int = None
     numval: int = None
+
     def __init__(self, header: str, frmstr: str,
                  halign: str='') -> None:
         self.header = header
@@ -16,6 +17,7 @@ class MDList(MDObject):
         self.values = []
         self.numval = 0
         self.length = max(len(self.header), 3)
+
     def add_value(self, value: Any) -> None:
         self.values.append(value)
         self.numval = len(self.values)
@@ -27,14 +29,17 @@ class MDList(MDObject):
         strlen = len(string)
         if strlen > self.length:
             self.length = strlen
+
     def __getitem__(self, ind: int) -> Any:
         if ind < len(self.values):
             return self.values[ind]
         else:
             raise IndexError
+
     def header_string(self) -> str:
         frmstr = '{:'+self.halign+str(self.length)+'s}'
         return frmstr.format(self.header)
+
     def align_string(self) -> str:
         if self.length == 1:
             return ':'
@@ -52,12 +57,14 @@ class MDList(MDObject):
             frmstr = '{:'+self.halign+str(self.length)+'s}'
             char = ':'
         return frmstr.format(char).replace(' ', '-')
+
     def value_string(self, ind: int) -> str:
         if ind < len(self.values):
             frmstr = '{:'+self.halign+str(self.length)+self.frmstr+'}'
             return frmstr.format(self.values[ind])
         else:
             raise IndexError
+
     def _repr_markdown_(self) -> str:
         mdstr = '\n'
         mdstr += '| ' + self.header_string() + ' |\n'
@@ -66,6 +73,7 @@ class MDList(MDObject):
             mdstr += '| ' + self.value_string(i) + ' |\n'
         mdstr += '\n<br/>\n'
         return mdstr
+
     def __str__(self) -> str:
         outstr = '\n'
         outstr += '| ' + self.header_string() + ' |\n'
@@ -73,5 +81,6 @@ class MDList(MDObject):
         for i in range(self.numval):
             outstr += '| ' + self.value_string(i) + ' |\n'
         return outstr
+    
     def __repr__(self) -> str:
         return f'<py2md.MDList: {self.header:s}>'

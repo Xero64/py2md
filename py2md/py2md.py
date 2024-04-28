@@ -13,12 +13,14 @@ class Py2MD():
     nocode: bool = None
     nohead: bool = None
     inline: bool = None
+
     def __init__(self, source: str) -> None:
         self.source = source
         self.read()
         self.nocode = False
         self.nohead = False
         self.inline = False
+
     def read(self):
         print('Reading {:s}'.format(self.source))
         t0 = time()
@@ -52,6 +54,7 @@ class Py2MD():
         t1 = time()
         total = t1-t0
         print('Read {:s} in {:g} seconds'.format(self.source, total))
+
     def print_cells(self) -> None:
         for ind, cell in enumerate(self.cells):
             print('Chunk {:d}'.format(ind))
@@ -64,6 +67,7 @@ class Py2MD():
                 for result in cell['results']:
                     print('{:}'.format(result))
                 print()
+
     def run(self, mplpng: bool=False) -> None:
         kernel = 'python3'
         curdir = split(abspath(self.source))[0]
@@ -99,6 +103,7 @@ class Py2MD():
 
         jk.stop_client()
         jk.stop_kernel()
+
     def write_file(self, inline: bool=False,
                    nocode: bool=False,
                    nohead: bool=False) -> None:
@@ -113,6 +118,7 @@ class Py2MD():
         t1 = time()
         total = t1-t0
         print('Wrote {:s} in {:g} seconds'.format(destination, total))
+        
     def __repr__(self) -> str:
         return '<py2md.Py2MD>'
 

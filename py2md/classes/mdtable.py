@@ -5,9 +5,11 @@ from .mdlist import MDList
 class MDTable(MDObject):
     columns: List['MDList'] = None
     numrows: int = None
+
     def __init__(self) -> None:
         self.columns = []
         self.numrows = 0
+
     def add_column(self, header: str, frmstr: str,
                    halign: str='', data: list=[]) -> None:
         from .mdlist import MDList
@@ -19,6 +21,7 @@ class MDTable(MDObject):
             self.columns.append(mdlist)
         elif mdlist.numval == self.numrows:
             self.columns.append(mdlist)
+
     def add_row(self, data) -> None:
         if len(data) != len(self.columns):
             err = 'The length of data does not match the number of columns.'
@@ -27,6 +30,7 @@ class MDTable(MDObject):
             self.numrows += 1
             for i, column in enumerate(self.columns):
                 column.add_value(data[i])
+
     def _repr_markdown_(self) -> str:
         mdstr = '\n|'
         for column in self.columns:
@@ -43,6 +47,7 @@ class MDTable(MDObject):
             mdstr += '\n'
         mdstr += '\n<br/>\n'
         return mdstr
+
     def __str__(self) -> str:
         outstr = '\n|'
         for column in self.columns:
@@ -58,5 +63,6 @@ class MDTable(MDObject):
                 outstr += ' ' + column.value_string(i) + ' |'
             outstr += '\n'
         return outstr
+    
     def __repr__(self) -> str:
         return '<py2md.MDTable>'

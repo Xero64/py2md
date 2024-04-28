@@ -2,6 +2,7 @@ from sys import argv
 from .py2md import Py2MD
 
 def main() -> None:
+
     if len(argv) == 1:
         print('Specify a .py file to run and create a .py.md output file.')
         print('Use -debug to debug py2md process.')
@@ -9,6 +10,7 @@ def main() -> None:
         print('Use -nohead to omit cell headers from output.')
         print('Use -inline to make images internal to the output.')
         print('Use -mplpng to make create png rather than svg images.')
+
     elif argv[1][-3:] == '.py':
         py2md = Py2MD(argv[1])
         nocode, nohead, inline, debug, mplpng = False, False, False, False, False
@@ -30,5 +32,6 @@ def main() -> None:
         if debug:
             py2md.print_cells()
         py2md.write_file(inline, nocode, nohead)
+        
     else:
         print('A python .py file needs to be supplied as the first argument.')

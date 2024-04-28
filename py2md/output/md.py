@@ -6,11 +6,14 @@ class MDWriter():
     destfilepath: str = None
     destfile: 'TextIO' = None
     imgcount: int = None
+
     def __init__(self, destfilepath: str) -> None:
         self.destfilepath = destfilepath
         self.imgcount = 0
+
     def open_file(self) -> None:
         self.destfile = open(self.destfilepath, 'wt', encoding='utf-8')
+
     def write_cell(self, cell: Dict[str, str],
                    inline: bool=False,
                    nocode: bool=False,
@@ -18,6 +21,7 @@ class MDWriter():
         if cell['type'] == 'code':
             self.write_codeblock(cell, nocode, nohead)
         self.write_mdblock(cell, inline)
+
     def write_codeblock(self, cell: Dict[str, str],
                         nocode: bool=False,
                         nohead: bool=False) -> None:
@@ -32,6 +36,7 @@ class MDWriter():
                 if line.strip() != '':
                     self.destfile.write(f'{line:s}\n')
             self.destfile.write('```\n')
+
     def write_mdblock(self, cell: Dict[str, str],
                       inline: bool=False) -> None:
         results = cell['results']
@@ -131,7 +136,9 @@ class MDWriter():
                     self.destfile.write(mdstr)
             else:
                 self.destfile.write('{:s}'.format(group['result']))
+
     def close_file(self) -> None:
         self.destfile.close()
+
     def __repr__(self) -> str:
         return '<py2md.MDWriter>'

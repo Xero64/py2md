@@ -16,10 +16,12 @@ class MDFigure(MDObject):
     frm: str = None
     figstr: str = None
     figbyt: bytes = None
+
     def __init__(self, fig: 'Figure', frm: str='svg') -> None:
         self.fig = fig
         self.frm = frm
         self.store_and_close()
+
     def store_and_close(self) -> None:
         if self.frm == 'svg':
             strio = StringIO()
@@ -36,6 +38,7 @@ class MDFigure(MDObject):
             bytio.close()
             self.figbyt = figbyt
         close(self.fig)
+
     def to_mdreport(self, path: str, mdname: str, figind: int) -> str:
         figpath = join(path, mdname)
         makedirs(figpath, exist_ok=True)
@@ -51,6 +54,7 @@ class MDFigure(MDObject):
                       imgfile.write(self.figbyt)
         figrelpath = relpath(figfilepath, path)
         return f'\n![]({figrelpath:s})\n'
+
     def _repr_markdown_(self) -> str:
         if self.frm == 'svg':
             return self.figstr
@@ -59,7 +63,9 @@ class MDFigure(MDObject):
             outtext = '\n<img alt="" src="data:image/png;base64,'
             outtext += pngbyt64.decode() + '" />\n'
             return outtext
+
     def __str__(self) -> str:
         return 'py2md.MDFigure'
+    
     def __repr__(self) -> str:
         return '<py2md.MDFigure>'
