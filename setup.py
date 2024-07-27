@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="py2md",
-    version="0.1.0",
+    version="0.1.1",
     author="Xero64",
     author_email="xero64@gmail.com",
     description="Run python code in jupyter to generate markdown reports.",
@@ -18,7 +18,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.7',
+    python_requires='>=3.10',
     entry_points = {
         'console_scripts': ['py2md=py2md.__main__:main',],
     }
