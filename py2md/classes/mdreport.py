@@ -1,9 +1,9 @@
+from os.path import join, split
 from typing import List
-from os.path import split, join
 
 from .mdfigure import MDFigure
-from .mdobject import MDObject
 from .mdheading import MDHeading
+from .mdobject import MDObject
 from .mdtable import MDTable
 
 

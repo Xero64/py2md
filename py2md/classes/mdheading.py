@@ -1,5 +1,6 @@
 from .mdobject import MDObject
 
+
 class MDHeading(MDObject):
     heading: str = None
     level: int = None

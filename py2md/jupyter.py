@@ -1,9 +1,9 @@
-from typing import TYPE_CHECKING, List, Dict
+from os import devnull
+from queue import Empty
+from typing import TYPE_CHECKING, Dict, List
 
 from jupyter_client import KernelManager
 from nbformat.v4 import output_from_msg
-from os import devnull
-from queue import Empty
 
 if TYPE_CHECKING:
     from jupyter_client import BlockingKernelClient

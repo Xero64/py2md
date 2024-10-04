@@ -1,5 +1,5 @@
 from base64 import b64encode
-from io import StringIO, BytesIO
+from io import BytesIO, StringIO
 from os import makedirs
 from os.path import join, relpath
 from typing import TYPE_CHECKING

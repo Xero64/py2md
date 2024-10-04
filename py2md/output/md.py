@@ -1,6 +1,6 @@
-from typing import TextIO, Dict
-
 from base64 import b64decode
+from typing import Dict, TextIO
+
 
 class MDWriter():
     destfilepath: str = None

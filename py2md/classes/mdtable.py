@@ -1,6 +1,8 @@
 from typing import List
-from .mdobject import MDObject
+
 from .mdlist import MDList
+from .mdobject import MDObject
+
 
 class MDTable(MDObject):
     columns: List['MDList'] = None

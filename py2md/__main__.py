@@ -1,5 +1,7 @@
 from sys import argv
+
 from .py2md import Py2MD
+
 
 def main() -> None:
 

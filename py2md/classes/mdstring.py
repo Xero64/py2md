@@ -1,5 +1,6 @@
 from .mdobject import MDObject
 
+
 class MDString(MDObject):
     string: str = None
 

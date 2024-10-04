@@ -1,5 +1,7 @@
-from typing import List, Any
+from typing import Any, List
+
 from .mdobject import MDObject
+
 
 class MDMatrix(MDObject):
     label: str = None

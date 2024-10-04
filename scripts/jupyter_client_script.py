@@ -1,10 +1,11 @@
 #%%
 # Import Dependencies
+from os import devnull
 from os.path import abspath, split
+from queue import Empty
+
 from jupyter_client.manager import KernelManager
 from nbformat.v4 import output_from_msg
-from queue import Empty
-from os import devnull
 
 #%%
 # Start Variables

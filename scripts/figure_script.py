@@ -1,8 +1,9 @@
 #%%
 # Import Dependencies
+from math import radians, sin
+
 from IPython.display import display_markdown
 from matplotlib.pyplot import figure
-from math import sin, radians
 from py2md.classes import MDFigure
 
 #%%
