@@ -5,7 +5,7 @@ from .mdobject import MDObject
 
 
 class MDTable(MDObject):
-    columns: List['MDList'] = None
+    columns: List[MDList] = None
     numrows: int = None
 
     def __init__(self) -> None:
@@ -65,6 +65,6 @@ class MDTable(MDObject):
                 outstr += ' ' + column.value_string(i) + ' |'
             outstr += '\n'
         return outstr
-    
+
     def __repr__(self) -> str:
         return '<py2md.MDTable>'

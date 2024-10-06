@@ -3,30 +3,30 @@ from typing import Any, List
 from .mdobject import MDObject
 
 
-class MDList(MDObject):
+class MDParamList(MDObject):
     header: str = None
-    frmstr: str = None
     halign: str = None
     values: List[Any] = None
+    valfrm: List[str] = None
     length: int = None
     numval: int = None
 
-    def __init__(self, header: str, frmstr: str,
-                 halign: str='') -> None:
+    def __init__(self, header: str, halign: str='') -> None:
         self.header = header
-        self.frmstr = frmstr
         self.halign = halign
         self.values = []
+        self.valfrm = []
         self.numval = 0
         self.length = max(len(self.header), 3)
 
-    def add_value(self, value: Any) -> None:
+    def add_value(self, value: Any, valfrm: str) -> None:
         self.values.append(value)
+        self.valfrm.append(valfrm)
         self.numval = len(self.values)
         try:
-            string = value.__format__(self.frmstr)
+            string = value.__format__(valfrm)
         except TypeError:
-            err = f'Value {value} cannot be formatted with {self.frmstr}.'
+            err = f'Value {value} cannot be formatted with {valfrm}.'
             raise TypeError(err)
         strlen = len(string)
         if strlen > self.length:
@@ -53,16 +53,16 @@ class MDList(MDObject):
             else:
                 return '::'
         elif self.halign == '':
-            frmstr = ':{:'+str(self.length-2)+'s}:'
+            frmstr = ':{:' + str(self.length-2) + 's}:'
             char = ''
         else:
-            frmstr = '{:'+self.halign+str(self.length)+'s}'
+            frmstr = '{:' + self.halign + str(self.length) + 's}'
             char = ':'
         return frmstr.format(char).replace(' ', '-')
 
     def value_string(self, ind: int) -> str:
         if ind < len(self.values):
-            frmstr = '{:'+self.halign+str(self.length)+self.frmstr+'}'
+            frmstr = '{:' + self.halign + str(self.length) + self.valfrm[ind] + '}'
             return frmstr.format(self.values[ind])
         else:
             raise IndexError
@@ -85,4 +85,4 @@ class MDList(MDObject):
         return outstr
 
     def __repr__(self) -> str:
-        return f'<py2md.MDList: {self.header:s}>'
+        return f'<py2md.MDParamList: {self.header:s}>'

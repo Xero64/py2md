@@ -3,7 +3,10 @@ from typing import List
 
 from .mdfigure import MDFigure
 from .mdheading import MDHeading
+from .mdlist import MDList
 from .mdobject import MDObject
+from .mdparamlist import MDParamList
+from .mdparamtable import MDParamTable
 from .mdtable import MDTable
 
 
@@ -51,6 +54,31 @@ class MDReport(MDObject):
         table = MDTable()
         self.add_object(table)
         return table
+
+    def add_paramtable(self) -> MDParamTable:
+        paramtable = MDParamTable()
+        self.add_object(paramtable)
+        return paramtable
+
+    def add_paramlist(self, header: str, frmstr: str) -> MDParamList:
+        paramlist = MDParamList(header, frmstr)
+        self.add_object(paramlist)
+        return paramlist
+
+    def add_list(self, header: str, frmstr: str, halign: str='') -> MDList:
+        mdlist = MDList(header, frmstr, halign)
+        self.add_object(mdlist)
+        return mdlist
+
+    def add_figure(self, figpath: str, caption: str) -> MDFigure:
+        figure = MDFigure(figpath, caption)
+        self.add_object(figure)
+        return figure
+
+    def add_report(self) -> 'MDReport':
+        report = MDReport()
+        self.add_object(report)
+        return report
 
     def _repr_markdown_(self) -> str:
         mdstr = ''
