@@ -4,6 +4,7 @@ from math import radians, sin
 
 from IPython.display import display_markdown
 from matplotlib.pyplot import figure
+
 from py2md.classes import MDFigure
 
 #%%

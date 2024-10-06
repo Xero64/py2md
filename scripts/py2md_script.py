@@ -10,6 +10,7 @@
 # Import Dependencies
 from IPython.display import display
 from matplotlib.pyplot import figure
+
 from py2md.classes import MDTable
 
 #%%
