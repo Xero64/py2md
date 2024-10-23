@@ -1,6 +1,6 @@
 from os import devnull
 from queue import Empty
-from typing import TYPE_CHECKING, Dict, List
+from typing import TYPE_CHECKING
 
 from jupyter_client import KernelManager
 from nbformat.v4 import output_from_msg
@@ -12,7 +12,7 @@ class JupyterKernel():
     kernel: 'KernelManager' = None
     curdir: str = None
     client: 'BlockingKernelClient' = None
-    output: List[str] = None
+    output: list[str] = None
 
     def __init__(self, kernel: str, curdir: str) -> None:
         self.kernel = KernelManager(kernel_name=kernel)
@@ -89,7 +89,7 @@ class JupyterKernel():
             else:
                 self.output.append(out)
 
-    def run_cell(self, cell: Dict[str, str]) -> None:
+    def run_cell(self, cell: dict[str, str]) -> None:
         self.output = []
         content = cell['content']
         contentsplit = content.split('\n')

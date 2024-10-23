@@ -1,7 +1,6 @@
 from os.path import abspath, split
 from re import search
 from time import time
-from typing import Dict, List
 
 from .jupyter import JupyterKernel
 from .output.md import MDWriter
@@ -9,7 +8,7 @@ from .output.md import MDWriter
 
 class Py2MD():
     source: str = None
-    cells: List[Dict[str, str]] = None
+    cells: list[dict[str, str]] = None
     nocode: bool = None
     nohead: bool = None
     inline: bool = None
@@ -118,7 +117,7 @@ class Py2MD():
         t1 = time()
         total = t1-t0
         print('Wrote {:s} in {:g} seconds'.format(destination, total))
-        
+
     def __repr__(self) -> str:
         return '<py2md.Py2MD>'
 

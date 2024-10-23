@@ -1,11 +1,9 @@
-from typing import List
-
 from .mdlist import MDList
 from .mdobject import MDObject
 
 
 class MDTable(MDObject):
-    columns: List[MDList] = None
+    columns: list[MDList] = None
     numrows: int = None
 
     def __init__(self) -> None:

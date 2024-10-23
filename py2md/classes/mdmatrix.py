@@ -1,14 +1,14 @@
-from typing import Any, List
+from typing import Any
 
 from .mdobject import MDObject
 
 
 class MDMatrix(MDObject):
     label: str = None
-    matrix: List[List[Any]] = None
+    matrix: list[list[Any]] = None
     frmstr: str = None
-    
-    def __init__(self, label: str, matrix: List[List[Any]],
+
+    def __init__(self, label: str, matrix: list[list[Any]],
                  frmstr: str) -> None:
         self.label = label
         self.matrix = matrix

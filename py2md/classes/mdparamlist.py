@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any
 
 from .mdobject import MDObject
 
@@ -6,8 +6,8 @@ from .mdobject import MDObject
 class MDParamList(MDObject):
     header: str = None
     halign: str = None
-    values: List[Any] = None
-    valfrm: List[str] = None
+    values: list[Any] = None
+    valfrm: list[str] = None
     length: int = None
     numval: int = None
 

@@ -1,5 +1,5 @@
 from base64 import b64decode
-from typing import Dict, TextIO
+from typing import TextIO
 
 
 class MDWriter():
@@ -14,7 +14,7 @@ class MDWriter():
     def open_file(self) -> None:
         self.destfile = open(self.destfilepath, 'wt', encoding='utf-8')
 
-    def write_cell(self, cell: Dict[str, str],
+    def write_cell(self, cell: dict[str, str],
                    inline: bool=False,
                    nocode: bool=False,
                    nohead: bool=False) -> None:
@@ -22,7 +22,7 @@ class MDWriter():
             self.write_codeblock(cell, nocode, nohead)
         self.write_mdblock(cell, inline)
 
-    def write_codeblock(self, cell: Dict[str, str],
+    def write_codeblock(self, cell: dict[str, str],
                         nocode: bool=False,
                         nohead: bool=False) -> None:
         if not nohead:
@@ -37,7 +37,7 @@ class MDWriter():
                     self.destfile.write(f'{line:s}\n')
             self.destfile.write('```\n')
 
-    def write_mdblock(self, cell: Dict[str, str],
+    def write_mdblock(self, cell: dict[str, str],
                       inline: bool=False) -> None:
         results = cell['results']
         groups = []

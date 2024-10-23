@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any
 
 from .mdobject import MDObject
 
@@ -7,7 +7,7 @@ class MDList(MDObject):
     header: str = None
     frmstr: str = None
     halign: str = None
-    values: List[Any] = None
+    values: list[Any] = None
     length: int = None
     numval: int = None
 

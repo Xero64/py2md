@@ -1,5 +1,4 @@
 from os.path import join, split
-from typing import List
 
 from .mdfigure import MDFigure
 from .mdheading import MDHeading
@@ -11,7 +10,7 @@ from .mdtable import MDTable
 
 
 class MDReport(MDObject):
-    objs: List['MDObject'] = None
+    objs: list['MDObject'] = None
 
     def __init__(self) -> None:
         self.objs = []
