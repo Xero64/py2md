@@ -1,8 +1,10 @@
 from os.path import join, split
+from typing import Any
 
 from .mdfigure import MDFigure
 from .mdheading import MDHeading
 from .mdlist import MDList
+from .mdmatrix import MDMatrix
 from .mdobject import MDObject
 from .mdparamlist import MDParamList
 from .mdparamtable import MDParamTable
@@ -78,6 +80,12 @@ class MDReport(MDObject):
         report = MDReport()
         self.add_object(report)
         return report
+
+    def add_matrix(self, label: str, data: list[list[Any]],
+                   frmstr: str = '') -> MDMatrix:
+        mdmatrix = MDMatrix(label, data, frmstr)
+        self.add_object(mdmatrix)
+        return mdmatrix
 
     def _repr_markdown_(self) -> str:
         mdstr = ''
