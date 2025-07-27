@@ -1,0 +1,24 @@
+[project]
+name = "py2md"
+version = "0.1.2"
+authors = [
+  { name="Xero64", email="xero64@gmail.com" },
+]
+description = "Run Python code in Jupyter to generate markdown reports."
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+dependencies = [
+]
+
+[project.urls]
+Homepage = "https://github.com/Xero64/py2md"
+Issues = "https://github.com/Xero64/py2md/issues"
+
+[project.scripts]
+py2md = "py2md.__main__:main"
