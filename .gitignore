@@ -1,4 +1,6 @@
 uv.lock
+requirements.txt
+run_all.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
