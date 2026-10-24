@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "py2md"
-version = "0.1.4"
+version = "0.1.5"
 authors = [
   { name="Xero64", email="xero64@gmail.com" },
 ]
@@ -15,7 +15,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
-license = { text = "MIT" }
+license = "MIT"
 license-files = ["LICEN[CS]E*"]
 dependencies = [
     "jupyter-client>=8.6.3",
