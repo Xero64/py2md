@@ -1,17 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "py2md"
-version = "0.1.3"
+version = "0.1.4"
 authors = [
   { name="Xero64", email="xero64@gmail.com" },
 ]
 description = "Run Python code in Jupyter to generate markdown reports."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
-license = "MIT"
+license = { text = "MIT" }
 license-files = ["LICEN[CS]E*"]
 dependencies = [
     "jupyter-client>=8.6.3",
